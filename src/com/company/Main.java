@@ -13,7 +13,7 @@ public class Main {
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Enemy> enemys = new ArrayList<>();
         Scanner scan = new Scanner(System.in);
-        //START INTO -----------------------
+        //START INTRO -----------------------
         System.out.println("Hello Advernture! This world is yours to explore, but first we need to know your name?");
         Player p1 = new Player();
         System.out.println("What is your name?");
@@ -27,7 +27,7 @@ public class Main {
         Thread.sleep(4000);
         System.out.println("You begin to walk on a path, one that seems more perculure, after fifteen minutes of progress, a mysterious voice appears");
          Thread.sleep(4000);
-        System.out.println(players.get(0).getName() + ", There is a werry traveler that needs assistance, take this sword and shield!!");
+        System.out.println(players.get(0).getName() + ", There is a weary traveler that needs assistance, take this sword and shield!!");
         Thread.sleep(4000);
         p1.swords.add(new Sword("Explorers Sword",1,5));
         p1.shields.add(new Shield("Travelers Shield",12,1));
