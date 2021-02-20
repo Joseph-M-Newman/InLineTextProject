@@ -1,17 +1,43 @@
 package com.company;
 import Object.*;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
-        int switchCase= 0;
-        String possbleChange;
+    public static void main(String[] args) throws InterruptedException, IOException {
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Enemy> enemys = new ArrayList<>();
+        /**
+         * Load Files if file exists from previous save;
+         */
+        File file = new File("Data.txt");
+
+//        if(file.exists() && !file.isDirectory()){
+//            Scanner scan = new Scanner("Data.txt");
+//            BufferedReader reader = new BufferedReader(new FileReader("Data.txt"));
+//            try{
+//                if(scan.hasNextLine()){
+//                    // double health, double baseMelee, double baseDefense, double baseMage, String name, double gold
+//                    Player player = new Player(Double.parseDouble(reader.readLine()),Double.parseDouble(reader.readLine()),Double.parseDouble(reader.readLine())
+//                            ,Double.parseDouble(reader.readLine()),reader.readLine(),Double.parseDouble(reader.readLine()));
+//                    players.add(player);
+//                }
+//            } catch (FileNotFoundException e){
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        //---------------------------------------------
+        int switchCase= 0;
+        String possbleChange;
         Scanner scan = new Scanner(System.in);
         //START INTRO -----------------------
         System.out.println("Hello Advernture! This world is yours to explore, but first we need to know your name?");
@@ -50,6 +76,13 @@ public class Main {
             System.out.println(players.get(0).getHealth());
         }
 
+        System.out.println("Save game?");
+        int save = scan.nextInt();
+        if(save == 1){
+            saveState(players);
+        }
+
+
     }
 
     static double battleBegin(Player p1, Enemy e) throws InterruptedException {
@@ -70,7 +103,7 @@ public class Main {
                double calc = p1.getBaseMelee() * p1.swords.get(0).getDamage() + 2;
                double pAD = p1.getBaseMelee() + p1.swords.get(0).getDamage() / calc;
                eHp = eHp - pAD;
-               e.setHealth(e.getHealth()-eHp);
+               e.setHealth(eHp);
                System.out.println("Total Health: " + p1.getHealth() + "||   Enemy Health: " + e.getHealth());
 
                if(e.getHealth()<= 0){
@@ -106,6 +139,29 @@ public class Main {
 
         }while(!(e.getHealth()<=0));
        return p1.getHealth();
+    }
+
+    static void saveState(ArrayList<Player> p) throws IOException {
+        Player player = p.get(0);
+        FileWriter writer = new FileWriter("Data.txt");
+        final Path path = Files.createTempFile("Data",".txt");
+        File file = new File("Data.txt");
+       if(!Files.exists(path)){
+           file.createNewFile();
+       }
+        if(p.size() != 0){
+            writer.write(String.valueOf(player.getHealth()));
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getBaseMelee()));
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getBaseDefense()));
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getBaseMage()));
+            writer.write(System.lineSeparator());
+            writer.write(player.getName());
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getGold()));
+        }
     }
 
 }

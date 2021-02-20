@@ -7,6 +7,7 @@ public class Player {
     double baseMelee;
     double baseDefense;
     double baseMage;
+    double gold;
     String name = "";
     public ArrayList<Sword> swords = new ArrayList<>();
     public ArrayList<Shield> shields = new ArrayList<>();
@@ -17,14 +18,16 @@ public class Player {
         this.baseMage = 1;
         this.baseDefense = 1;
         this.name = "";
+        this.gold = 0;
     }
 
-    public Player(double health, double baseMelee, double baseDefense, double baseMage, String name) {
+    public Player(double health, double baseMelee, double baseDefense, double baseMage, String name, double gold) {
         this.health = health;
         this.baseMelee = baseMelee;
         this.baseDefense = baseDefense;
         this.baseMage = baseMage;
         this.name = name;
+        this.gold = gold;
     }
 
     //----------- getters and setters -----------
@@ -74,7 +77,12 @@ public class Player {
         this.health -= damage;
     }
 
-    public void AttackTarget(Enemy e) {
-
+    public double getGold() {
+        return gold;
     }
+
+    public void setGold(double gold) {
+        this.gold = gold;
+    }
+
 }
