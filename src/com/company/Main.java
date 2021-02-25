@@ -59,6 +59,7 @@ public class Main {
         p1.shields.add(new Shield("Travelers Shield",12,1));
         System.out.println(p1.swords.get(0).getName() + " added to your inventory");
         System.out.println(p1.shields.get(0).getName() + " added to your inventory");
+
         //END INTRO ----------------------------
         enemys.add(new Enemy(10,1.0,.2,0));
         //Enemy Creation
@@ -81,6 +82,16 @@ public class Main {
         if(save == 1){
             saveState(players);
         }
+        System.out.println("Thank you Traveler! May I asked who saved my life?....");
+        Thread.sleep(4000);
+        System.out.println(p1.getName() + ", I see! Well sterban let me show you some gratitude, here!");
+        Thread.sleep(1000);
+        System.out.println("*The traveler hands you a bag of gold!");
+        p1.setGold(p1.getGold() + 2);
+
+        /*
+            Testing trading system;
+         */
 
 
     }
@@ -102,7 +113,7 @@ public class Main {
            if(choice == 1){
                double calc = p1.getBaseMelee() * p1.swords.get(0).getDamage() + 2;
                double pAD = p1.getBaseMelee() + p1.swords.get(0).getDamage() / calc;
-               eHp = eHp - pAD;
+               eHp = eHp - (pAD+.84);
                e.setHealth(eHp);
                System.out.println("Total Health: " + p1.getHealth() + "||   Enemy Health: " + e.getHealth());
 
@@ -141,15 +152,33 @@ public class Main {
        return p1.getHealth();
     }
 
+    /**
+     *
+     * @param p player array list thats made on creation;
+     * @throws IOException file not found/ error reading
+     */
     static void saveState(ArrayList<Player> p) throws IOException {
         Player player = p.get(0);
         FileWriter writer = new FileWriter("Data.txt");
         final Path path = Files.createTempFile("Data",".txt");
         File file = new File("Data.txt");
-       if(!Files.exists(path)){
-           file.createNewFile();
-       }
-        if(p.size() != 0){
+        if(file.exists() && !file.isDirectory()){
+            writer.write(String.valueOf(player.getHealth()));
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getBaseMelee()));
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getBaseDefense()));
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getBaseMage()));
+            writer.write(System.lineSeparator());
+            writer.write(player.getName());
+            writer.write(System.lineSeparator());
+            writer.write(String.valueOf(player.getGold()));
+
+        }else{
+            if(file.createNewFile()) {
+                System.out.println("New File Created");
+            }
             writer.write(String.valueOf(player.getHealth()));
             writer.write(System.lineSeparator());
             writer.write(String.valueOf(player.getBaseMelee()));
@@ -162,6 +191,36 @@ public class Main {
             writer.write(System.lineSeparator());
             writer.write(String.valueOf(player.getGold()));
         }
+
+    }
+
+    static void startTrader(Player p) {
+        boolean trade = true;
+        ArrayList<String> itemShop = new ArrayList<>();
+        itemShop.add("potion");
+        System.out.println("Welcome " + p.getName() + "!");
+        Scanner scan = new Scanner(System.in);
+        tradeMenu();
+        int choice = scan.nextInt();
+        do {
+            if (choice == 1) {
+                for (int i = 0; i < itemShop.size(); ++i) {
+                    System.out.println(itemShop.get(i));
+                }
+                if (choice == 4) {
+                    trade = false;
+                }
+
+            }
+
+        }while (trade);
+    }
+    static void tradeMenu(){
+        System.out.println("1. Buy an Item?");
+        System.out.println("2. Sell Items");
+        System.out.println("3. Look for quest?");
+        System.out.println("4. Exit");
+
     }
 
 }
